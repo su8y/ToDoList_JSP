@@ -14,14 +14,26 @@ public class ToDoController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         MemberRepository memberRepository = new JdbcMemberRepository();
-        Member member = new Member("qotndk","qotndk","qotndk","qotndk");
+        String id = request.getParameter("id");
+        String pw = request.getParameter("password");
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        Member member = new Member();
+        member.builder().mName(name).mId(id).mPw(pw).mEmail(email);
         memberRepository.save(member);
-
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-*");
+        MemberRepository memberRepository = new JdbcMemberRepository();
+        String id = request.getParameter("id");
+        String pw = request.getParameter("password");
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        System.out.println(id);
+        Member member = new Member();
+        member.builder().mName(name).mId(id).mPw(pw).mEmail(email);
+        memberRepository.save(member);
 
     }
 }
