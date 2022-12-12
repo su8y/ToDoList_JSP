@@ -59,3 +59,11 @@ main {
 .text {
     border: 2px solid black;
 }
+
+.joinbtnonclick {
+    width: 45%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 375px;
+}
