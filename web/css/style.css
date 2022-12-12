@@ -1,0 +1,12 @@
+@import "btn.css";
+@import "header.css";
+@import "pagingnation.css";
+@import "list.css";
+* {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
