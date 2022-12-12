@@ -48,8 +48,8 @@
             <artifactId>ojdbc8</artifactId>
             <version>21.1.0.0</version>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/junit/junit -->
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

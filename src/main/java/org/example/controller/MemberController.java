@@ -14,10 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Optional;
 
 @WebServlet(name = "ToDoController", value = "/member")
-public class ToDoController extends HttpServlet {
+public class MemberController extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("hi");
@@ -27,6 +26,7 @@ public class ToDoController extends HttpServlet {
         StringBuilder sb = new StringBuilder();
         BufferedReader reader = request.getReader();
         JSONParser parser = new JSONParser();
+        MemberRepository memberRepository = new JdbcMemberRepository();
         JSONObject json = null;
         while((line = reader.readLine()) != null){
             System.out.println(line);
@@ -42,14 +42,19 @@ public class ToDoController extends HttpServlet {
         String id = (String) json.get("id");
         String pw = (String) json.get("pw");
 
-        MemberRepository memberRepository = new JdbcMemberRepository();
-        Member member = new Member(id,pw,"","");
 
-        Member byId = memberRepository.findById(member.getMId());
-        System.out.println("hi");
-        System.out.println(byId.getMPw());
-        if(byId.getMPw().equals(member.getMPw())){
-            System.out.println("로그인성공");
+
+        Member byId = memberRepository.findById(id);
+        if(byId.getMPw().equals(pw)){
+            JSONObject object = new JSONObject();
+            object.put("message", "성공");
+            response.getWriter().write(object.toJSONString());
+        }
+        else {
+            JSONObject object = new JSONObject();
+            object.put("message", "실패");
+            response.getWriter().write(object.toJSONString());
+
         }
     }
 
@@ -87,7 +92,6 @@ public class ToDoController extends HttpServlet {
 
         MemberRepository memberRepository = new JdbcMemberRepository();
         Member member = new Member(id,pw,name,email);
-//         member.builder().mName(name).mId(id).mPw(pw).mEmail(email);
         memberRepository.save(member);
     }
 }

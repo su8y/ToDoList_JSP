@@ -35,15 +35,18 @@ public class JdbcMemberRepository extends JDBConnect implements MemberRepository
 
     @Override
     public Member findById(String mId) {
-        Member member = new Member();
+        Member member = null;
         try {
-            PreparedStatement preparedStatement = conn.prepareStatement("select * from member where m_id = ?");
-            preparedStatement.setString(1,mId);
-            rs = preparedStatement.executeQuery();
+            pstm = conn.prepareStatement("select * from member where m_id = ?");
+            pstm.setString(1,mId);
+            rs = pstm.executeQuery();
             if(rs.next()){
-                member.builder().mPw(rs.getString("pw"));
+                String m_email = rs.getString("m_email");
+                String m_name = rs.getString("m_name");
+                String m_id = rs.getString("m_id");
+                String m_pw = rs.getString("m_pw");
+                member=  Member.builder().mId(m_id).mPw(m_pw).mEmail(m_email).mName(m_name).build();
             }
-            conn.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
