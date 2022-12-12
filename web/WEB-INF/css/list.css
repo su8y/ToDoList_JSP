@@ -26,3 +26,10 @@ article {
   height: 50px;
   border-style: none;
 }
+
+
+.qwe div {
+  width: 30%;
+  flex: none;
+  float: left;
+}
