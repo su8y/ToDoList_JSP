@@ -12,4 +12,14 @@ public class Member {
     String mPw;
     String mName;
     String mEmail;
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "mId:'" + mId + '\'' +
+                ", mPw:'" + mPw + '\'' +
+                ", mName:'" + mName + '\'' +
+                ", mEmail:'" + mEmail + '\'' +
+                '}';
+    }
 }

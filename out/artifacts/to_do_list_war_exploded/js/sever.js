@@ -1,5 +1,4 @@
-function register(form){
-    console.log(form.id.value);
+function register(e){
     fetch('http://localhost:8080/member', {
         method: 'POST',
         cache: 'no-cache',
@@ -8,10 +7,10 @@ function register(form){
         },
         // body 값이 직접적으로 서버에게 보내는 값
         body: JSON.stringify({
-            id : form.id.value,
-            pw : form.password.value,
-            name : form.name.value,
-            email : form.email.value,
+            id : e.form.id.value,
+            pw : e.form.password.value,
+            name : e.form.name.value,
+            email : e.form.email.value,
         })
     }).then((response) => response.json()).then((data) => {
         console.log(data);

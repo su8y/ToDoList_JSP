@@ -19,7 +19,7 @@
         
     </div>
     <main>
-        <form id="form" onclick="" >
+        <form id="form" onsubmit="return false;" >
             <div class="joinbtn">
                 <label for="">
                     아이디
@@ -35,7 +35,7 @@
 
                 <label for="">
                     이름
-                    <input type="text" name="name" value="이름 입력" 
+                    <input type="text" name="name" value="이름 입력"
                     placeholder="이름을 입력해주세요" required>
                 </label>
                 <label for="">
@@ -46,7 +46,7 @@
                 </label>
             </div>
 <!--            파라미터로 지금 내가 감싸고 있는 form 을 넘겨줌 -->
-            <input type="submit" value="제출" onclick="register(this.form)">
+            <input type="submit" value="제출" onclick="register(this)">
         </form>
     </main>
     <script src="js/sever.js"></script>
