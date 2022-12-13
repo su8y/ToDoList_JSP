@@ -13,9 +13,14 @@ public class JDBConnect {
     public JDBConnect() {
         try{
             Class.forName("oracle.jdbc.OracleDriver");
+            String os = System.getProperty("os.name").toLowerCase();
             URL resource = Thread.currentThread().getContextClassLoader().getResource("");
-            System.out.println(resource);
-            String path = resource.toString().split(":")[1];
+            String path;
+            if(os.contains("mac")){
+                path = resource.toString().split(":")[1];
+            }else{
+                path = resource.toString().split("C:")[1];
+            }
             String split[] = path.split("/");
             String realPath = "";
             for(int i = 0 ; i < 3; i++){
