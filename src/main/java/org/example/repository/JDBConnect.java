@@ -1,5 +1,6 @@
 package org.example.repository;
 
+import java.io.File;
 import java.net.URL;
 import java.sql.*;
 
@@ -14,10 +15,18 @@ public class JDBConnect {
             Class.forName("oracle.jdbc.OracleDriver");
             URL resource = Thread.currentThread().getContextClassLoader().getResource("");
             System.out.println(resource);
-            String split = resource.toString().split("/out")[0];
-            split = split.split("file:")[1];
-            System.out.println(split);
-            conn = DriverManager.getConnection("jdbc:oracle:thin:@xx69ymgik72314ol_medium?TNS_ADMIN=/Users/baesua/dev/Wallet_XX69YMGIK72314OL","ADMIN","Ahmooguna1234!");
+            String path = resource.toString().split(":")[1];
+            String split[] = path.split("/");
+            String realPath = "";
+            for(int i = 0 ; i < 3; i++){
+                realPath += split[i];
+                realPath += File.separator;
+            }
+            realPath += "dev";
+            realPath += File.separator;
+            realPath += "Wallet_XX69YMGIK72314OL";
+            System.out.println(realPath);
+            conn = DriverManager.getConnection("jdbc:oracle:thin:@xx69ymgik72314ol_medium?TNS_ADMIN="+realPath,"ADMIN","Ahmooguna1234!");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {

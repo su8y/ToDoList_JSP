@@ -102,11 +102,14 @@ public class MemberController extends HttpServlet {
         Member member = new Member(id, pw, name, email);
         try {
             memberRepository.save(member);
+            JSONObject object = new JSONObject();
+            object.put("status_code", "SUCCESS");
+            response.setStatus(202);
+            response.getWriter().write(JSONObject.toJSONString(object));
         } catch (Exception e) {
             JSONObject object = new JSONObject();
             object.put("status_code", "FAIL");
             object.put("error", "이미 등록된 회원입니다.");
-            System.out.println("HI");
             response.setStatus(202);
             response.getWriter().write(JSONObject.toJSONString(object));
         }
