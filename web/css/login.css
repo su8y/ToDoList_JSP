@@ -5,29 +5,22 @@ body {
 main {
     width: 100%;
     margin-top: 150px;
+    
 }
 
-.joinbtn > label:first-child > input {
-    margin-left: 15px;
-    margin-bottom: 5px;
-}
-
-.joinbtn {
+form {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.formbtn {
-    margin-left: 175px;
-    margin-top: 0.3em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+#pw {
+    margin-right: 16px;
+    margin-top: 5px;
 }
 
-#loginclick {
-    margin-left: 205px;
+#submit {
+    margin-left: 188px;
     margin-top: 5px;
 }
