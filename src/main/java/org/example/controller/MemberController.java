@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.IllegalFormatFlagsException;
 
 @WebServlet(name = "ToDoController", value = "/member")
@@ -28,7 +29,7 @@ public class MemberController extends HttpServlet {
         JSONParser parser = new JSONParser();
         MemberRepository memberRepository = new JdbcMemberRepository();
         JSONObject json = null;
-        while((line = reader.readLine()) != null){
+        while ((line = reader.readLine()) != null) {
             sb.append(line);
         }
         try {
@@ -42,19 +43,26 @@ public class MemberController extends HttpServlet {
         String pw = (String) json.get("pw");
 
 
-
-        Member byId = memberRepository.findById(id);
-        if(byId.getMPw().equals(pw)){
-            JSONObject object = new JSONObject();
-            object.put("status_code","SUCCESS");
+        Member byId = null;
+        JSONObject object = new JSONObject();
+        try {
+            byId = memberRepository.findById(id);
+            if (byId != null) {
+                if (byId.getMPw().equals(pw)) {
+                    object.put("status_code", "SUCCESS");
+                    response.getWriter().write(object.toJSONString());
+                } else {
+                    object.put("status_code", "FAIL");
+                    object.put("error", "로그인 실패");
+                    response.getWriter().write(object.toJSONString());
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("hi");
+            object.put("status_code", "FAIL");
+            object.put("error", "아이디가 없습니다.");
+            response.setStatus(202);
             response.getWriter().write(object.toJSONString());
-        }
-        else {
-            JSONObject object = new JSONObject();
-            object.put("status_code","FAIL");
-            object.put("error", "로그인 실패");
-            response.getWriter().write(object.toJSONString());
-
         }
     }
 
@@ -72,7 +80,7 @@ public class MemberController extends HttpServlet {
         BufferedReader reader = request.getReader();
         JSONParser parser = new JSONParser();
         JSONObject json = null;
-        while((line = reader.readLine()) != null){
+        while ((line = reader.readLine()) != null) {
             System.out.println(line);
             sb.append(line);
         }
@@ -91,12 +99,12 @@ public class MemberController extends HttpServlet {
 
 
         MemberRepository memberRepository = new JdbcMemberRepository();
-        Member member = new Member(id,pw,name,email);
+        Member member = new Member(id, pw, name, email);
         try {
             memberRepository.save(member);
         } catch (Exception e) {
             JSONObject object = new JSONObject();
-            object.put("status_code","FAIL");
+            object.put("status_code", "FAIL");
             object.put("error", "이미 등록된 회원입니다.");
             System.out.println("HI");
             response.setStatus(202);
