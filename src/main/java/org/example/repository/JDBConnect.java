@@ -19,7 +19,7 @@ public class JDBConnect {
             if(os.contains("mac")){
                 path = resource.toString().split(":")[1];
             }else{
-                path = resource.toString().split("C:"+File.separator)[1];
+                path = resource.toString().split("C:")[1];
             }
             String split[] = path.split("/");
             String realPath = "";
@@ -28,7 +28,7 @@ public class JDBConnect {
                 realPath += "/";
             }
             realPath += "dev";
-            realPath += File.separator;
+            realPath += "/";
             realPath += "Wallet_XX69YMGIK72314OL";
             System.out.println(realPath);
             conn = DriverManager.getConnection("jdbc:oracle:thin:@xx69ymgik72314ol_medium?TNS_ADMIN="+realPath,"ADMIN","Ahmooguna1234!");
