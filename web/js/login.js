@@ -16,6 +16,9 @@ function login(login){
     });
     
 }
+var sessionValue = sessionStorage.getItem('login');
+
+console.log(login);
 
 var id = document.getElementById("id");
 var pw = document.getElementById("pw");
