@@ -55,12 +55,15 @@ public class JdbcMemberRepository extends JDBConnect implements MemberRepository
             pstm = conn.prepareStatement("select * from member where m_id = ?");
             pstm.setString(1,mId);
             rs = pstm.executeQuery();
+
             if(rs.next()){
                 String m_email = rs.getString("m_email");
                 String m_name = rs.getString("m_name");
                 String m_id = rs.getString("m_id");
                 String m_pw = rs.getString("m_pw");
                 member=  Member.builder().mId(m_id).mPw(m_pw).mEmail(m_email).mName(m_name).build();
+            }else{
+                throw new RuntimeException();
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
