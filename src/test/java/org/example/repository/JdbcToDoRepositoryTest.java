@@ -10,10 +10,10 @@ import org.junit.Test;
 public class JdbcToDoRepositoryTest {
     @Test
     public void save(){
-        ToDoRepository toDoRepository = new JdbcToDoRepository();
-        ToDo toDo = ToDo.builder().toDo("일어나자 !").m_name("qotndk").build();
-        toDoRepository.save(toDo);
-        Assertions.assertThat(toDo.getToDo()).isEqualTo()
+//        ToDoRepository toDoRepository = new JdbcToDoRepository();
+//        ToDo toDo = ToDo.builder().toDo("일어나자 !").m_name("qotndk").build();
+//        toDoRepository.save(toDo);
+//        Assertions.assertThat(toDo.getToDo()).isEqualTo()
     }
 
 }

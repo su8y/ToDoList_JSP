@@ -49,7 +49,7 @@ public class JdbcMemberRepository extends JDBConnect implements MemberRepository
     }
 
     @Override
-    public Member findById(String mId) {
+    public Member findById(String mId) throws RuntimeException {
         Member member = null;
         try {
             pstm = conn.prepareStatement("select * from member where m_id = ?");
@@ -64,6 +64,22 @@ public class JdbcMemberRepository extends JDBConnect implements MemberRepository
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }finally {
+            if(pstm != null) {
+                try {
+                    pstm.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if(conn != null){
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
         }
         return member;
     }
