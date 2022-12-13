@@ -17,3 +17,16 @@ function register(e){
     });
 }
 
+var input = document.getElementById("id"); 
+var pw = document.getElementById("pw"); 
+var text = document.getElementById("text"); 
+var email = document.getElementById("email"); 
+
+
+input.value = null;
+pw.value = null;
+text.value = null;
+email.value = null;
+
+
+
