@@ -3,6 +3,10 @@ article {
   margin: 0 auto;  
 }
 
+button {
+  cursor: pointer;
+}
+
 .qwe {
   margin-top: 35px;
   width: 100%;

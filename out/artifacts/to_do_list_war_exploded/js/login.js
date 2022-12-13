@@ -12,6 +12,14 @@ function login(login){
         })
     }).then((response) => response.json()).then((data) => {
         console.log(data);
+        
     });
+    
 }
+
+var id = document.getElementById("id");
+var pw = document.getElementById("pw");
+
+id.value = "";
+pw.value = "";
 
