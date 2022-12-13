@@ -19,13 +19,13 @@ public class JDBConnect {
             if(os.contains("mac")){
                 path = resource.toString().split(":")[1];
             }else{
-                path = resource.toString().split("C:")[1];
+                path = resource.toString().split("C:"+File.separator)[1];
             }
             String split[] = path.split("/");
             String realPath = "";
             for(int i = 0 ; i < 3; i++){
                 realPath += split[i];
-                realPath += File.separator;
+                realPath += "/";
             }
             realPath += "dev";
             realPath += File.separator;
