@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -13,14 +13,22 @@
         <div class="header-title">
             <a href="">
                 <h4>My ToDo</h4> </a
-              ><a href="">
+              >
         </div>
-      <ul class="headerbar-nav">
+
+        <!-- login -->
+
+        <!-- not login -->
+        <ul class="headerbar-nav" id="isLoginFalse">
+            welcome
+        </ul>
+      <ul class="headerbar-nav" id="isLoginTrue">
+
       <a href="login.html">
-          <li>로그인</li> 
+          <li>Login</li>
       </a>
         <a href="join.html">
-            <li>회원가입</li>
+            <li>Register</li>
         </a>
       </ul>
     </header>
@@ -28,23 +36,24 @@
         <h1 class="title-name">To Do List</h1>
     </section>
 
-
+    <!--onclick="createE()"-->
     <div id="qqqq">
         <main class="addtext">
-            <form action="">
+            <form id="todo" onclick="return false;">
                 <label class="addtext-btn" for="">
-                    <input type="text">
-                    <button>
-                        확인
+                    <input type="text" id="inputText">
+                    <button onclick="createE()">
+                        add
                     </button>
                 </label>
             </form>
         </main>
     </div>
-    
+
+
     <article>
         <div class="qwe">
-            <form action="">
+            <form id="todoform" action="">
                 <div>
                     <button>
                         V
@@ -61,12 +70,28 @@
     <div class="footer">
         <footer class="page">
             <form class="page-num" action="">
-                <button>이전</button>
+                <button>previsou</button>
                 <span>1</span>
                 <button>다음</button>
             </form>
         </footer>
     </div>
-  
+    <script src="js/addlist.js" />
+    <script>
+        sessionStorage.getItem("username");
+        var get = sessionStorage.getItem("username");
+        console.log(get);
+        if(get === null){
+            document.getElementById("isLoginTrue").style.visibility  = "visible";
+            document.getElementById("isLoginFalse").style.visibility = "hidden";
+        }else{
+            document.getElementById("isLoginTrue").style.visibility = "hidden";
+            document.getElementById("isLoginFalse").style.visibility = "visible";
+            document.getElementById("isLoginFalse").style.innerText ="welcome" + get;
+        }
+    </script>
+  <script src = "js/login.js">
+
+  </script>
   </body>
 </html>

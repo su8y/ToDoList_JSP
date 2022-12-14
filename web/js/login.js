@@ -9,20 +9,35 @@ function login(login){
         body: JSON.stringify({
             id : login.form.id.value,
             pw : login.form.password.value,
+
         })
     }).then((response) => response.json()).then((data) => {
         console.log(data);
-        
+        if (data.status_code === "SUCCESS") {
+            alert("로그인 성공");
+            var username = id.value;
+            sessionStorage.setItem("username", id.value);
+            window.location.href ="http://localhost:8080/";
+        } else {
+            alert("로그인 실패");
+        }
+
     });
     
 }
-var sessionValue = sessionStorage.getItem('login');
 
-console.log(login);
 
-var id = document.getElementById("id");
-var pw = document.getElementById("pw");
+// var login = "jess2";
+// sessionStorage.setItem("name", "jess2");
+// sessionStorage.getItem("name");
+// var getValue = sessionStorage.getItem(login);
+// console.log(getValue);
 
-id.value = "";
-pw.value = "";
+
+
+
+
+
+
+
 
