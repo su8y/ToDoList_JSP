@@ -6,7 +6,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 public class JdbcToDoRepository implements ToDoRepository {
     Connection conn;
@@ -25,7 +24,7 @@ public class JdbcToDoRepository implements ToDoRepository {
             pstmt = conn.prepareStatement("" +
                     "insert into todos(todo_id, m_id, todo, status) " +
                     "values(todos_seq.nextval,?,?,0");
-            pstmt.setString(1, toDo.getM_name());
+            pstmt.setString(1, toDo.getM_id());
             pstmt.setString(2, toDo.getToDo());
             res = pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -46,7 +45,7 @@ public class JdbcToDoRepository implements ToDoRepository {
             while (rs.next()) {
                 ToDo toDo = ToDo.builder()
                         .toDoId(rs.getLong("TODO_ID"))
-                        .m_name(rs.getString("M_ID"))
+                        .m_id(rs.getString("M_ID"))
                         .toDo(rs.getString("TODO"))
                         .status(rs.getInt("STATUS"))
                         .build();
@@ -62,14 +61,14 @@ public class JdbcToDoRepository implements ToDoRepository {
     public List<ToDo> findToDosByUsername(String username) {
         List<ToDo> result;
         try {
-            pstmt = conn.prepareStatement("select * from TODOS where M_ID = ? ");
+            pstmt = conn.prepareStatement("select * from TODOS where M_ID = ? ORDER BY status ASC");
             pstmt.setString(1, username);
             rs = pstmt.executeQuery();
             result = new ArrayList<>();
             while (rs.next()) {
                 ToDo toDo = ToDo.builder()
                         .toDoId(rs.getLong("TODO_ID"))
-                        .m_name(rs.getString("M_ID"))
+                        .m_id(rs.getString("M_ID"))
                         .toDo(rs.getString("TODO"))
                         .status(rs.getInt("STATUS"))
                         .build();
@@ -93,6 +92,15 @@ public class JdbcToDoRepository implements ToDoRepository {
 
     @Override
     public int updateToDo(ToDo toDo) {
-        return 0;
+        int result;
+        try {
+            pstmt = conn.prepareStatement("UPDATE TODOS set status = 1 where TODO_ID = ?");
+            pstmt.setLong(1, toDo.getToDoId());
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return result;
     }
 }

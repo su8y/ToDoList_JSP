@@ -10,7 +10,7 @@ import lombok.*;
 @Builder
 public class ToDo {
     long toDoId;
-    String m_name;
+    String m_id;
     String toDo;
     int status;
 }
