@@ -14,6 +14,11 @@ function register(e){
         })
     }).then((response) => response.json()).then((data) => {
         console.log(data);
+        if (data.status_code === "FAIL") {
+            alert("회원가입을 축하합니다.");
+        } else {
+            alert("회원가입을 해주세요.");
+        }
     });
 }
 
