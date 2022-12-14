@@ -2,21 +2,32 @@ package org.example.repository;
 
 import org.example.model.ToDo;
 
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
-public class JdbcToDoRepository extends JDBConnect implements ToDoRepository {
+public class JdbcToDoRepository implements ToDoRepository {
+    Connection conn;
+    PreparedStatement pstmt;
+    Statement stmt;
+    ResultSet rs;
+
+    public void setConn(Connection conn) {
+        this.conn = conn;
+    }
 
     @Override
     public int save(ToDo toDo) {
         int res;
         try {
-            pstm = conn.prepareStatement("" +
+            pstmt = conn.prepareStatement("" +
                     "insert into todos(todo_id, m_id, todo, status) " +
                     "values(todos_seq.nextval,?,?,0");
-            pstm.setString(1, toDo.getM_name());
-            pstm.setString(2, toDo.getToDo());
-            res = pstm.executeUpdate();
+            pstmt.setString(1, toDo.getM_name());
+            pstmt.setString(2, toDo.getToDo());
+            res = pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -24,18 +35,55 @@ public class JdbcToDoRepository extends JDBConnect implements ToDoRepository {
     }
 
     @Override
-    public Optional<ToDo> findAll() {
-        return Optional.empty();
+    public List<ToDo> findAll() {
+        List<ToDo> result;
+
+        System.out.println("find all");
+        try {
+            pstmt = conn.prepareStatement("select * from TODOS");
+            rs = pstmt.executeQuery();
+            result = new ArrayList<>();
+            while (rs.next()) {
+                ToDo toDo = ToDo.builder()
+                        .toDoId(rs.getLong("TODO_ID"))
+                        .m_name(rs.getString("M_ID"))
+                        .toDo(rs.getString("TODO"))
+                        .status(rs.getInt("STATUS"))
+                        .build();
+                result.add(toDo);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
     }
 
     @Override
-    public Optional<ToDo> findToDosByUsername(String username) {
-        return Optional.empty();
+    public List<ToDo> findToDosByUsername(String username) {
+        List<ToDo> result;
+        try {
+            pstmt = conn.prepareStatement("select * from TODOS where M_ID = ? ");
+            pstmt.setString(1, username);
+            rs = pstmt.executeQuery();
+            result = new ArrayList<>();
+            while (rs.next()) {
+                ToDo toDo = ToDo.builder()
+                        .toDoId(rs.getLong("TODO_ID"))
+                        .m_name(rs.getString("M_ID"))
+                        .toDo(rs.getString("TODO"))
+                        .status(rs.getInt("STATUS"))
+                        .build();
+                result.add(toDo);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return result != null ? result : Collections.emptyList();
     }
 
     @Override
-    public Optional<ToDo> findToDoById(long toDoId) {
-        return Optional.empty();
+    public List<ToDo> findToDoById(long toDoId) {
+        return null;
     }
 
     @Override

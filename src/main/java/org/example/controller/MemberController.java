@@ -7,18 +7,37 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.IllegalFormatFlagsException;
 
 @WebServlet(name = "ToDoController", value = "/member")
 public class MemberController extends HttpServlet {
+    ServletContext sc ;
+    JdbcMemberRepository memberRepository;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        sc = this.getServletContext();
+        memberRepository = (JdbcMemberRepository) sc.getAttribute("memberRepository");
+    }
+
+    @Override
+    public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
+        super.service(req, res);
+    }
+
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -27,7 +46,6 @@ public class MemberController extends HttpServlet {
         StringBuilder sb = new StringBuilder();
         BufferedReader reader = request.getReader();
         JSONParser parser = new JSONParser();
-        MemberRepository memberRepository = new JdbcMemberRepository();
         JSONObject json = null;
         while ((line = reader.readLine()) != null) {
             sb.append(line);
@@ -72,7 +90,7 @@ public class MemberController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        response.setContentType("application/json");
+        response.setContentType("application/json");
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         String line = null;
@@ -97,8 +115,6 @@ public class MemberController extends HttpServlet {
         String email = (String) json.get("email");
         System.out.println(id);
 
-
-        MemberRepository memberRepository = new JdbcMemberRepository();
         Member member = new Member(id, pw, name, email);
         try {
             memberRepository.save(member);
@@ -110,6 +126,7 @@ public class MemberController extends HttpServlet {
             JSONObject object = new JSONObject();
             object.put("status_code", "FAIL");
             object.put("error", "이미 등록된 회원입니다.");
+            object.put("error_message",e);
             response.setStatus(202);
             response.getWriter().write(JSONObject.toJSONString(object));
         }

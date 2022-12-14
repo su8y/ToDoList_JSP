@@ -2,42 +2,48 @@ package org.example.repository;
 
 import org.example.model.Member;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
+import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.util.Optional;
 
-public class JdbcMemberRepository extends JDBConnect implements MemberRepository{
+public class JdbcMemberRepository implements MemberRepository{
+    Connection conn;
+    PreparedStatement pstmt;
+
+    Statement stmt;
+
+    ResultSet rs;
+
+    public void setConn(Connection conn) {
+        this.conn = conn;
+    }
+
     @Override
     public Member save(Member member) throws RuntimeException{
         try {
-            System.out.println("hi");
-            System.out.println(member.getMId());
-            pstm = conn.prepareStatement("insert into member(m_id,m_pw,m_name,m_email) values(?,?,?,?)");
-            pstm.setString(1,member.getMId());
-            pstm.setString(2,member.getMPw());
-            pstm.setString(3,member.getMName());
-            pstm.setString(4,member.getMPw());
-            pstm.executeUpdate();
+            pstmt = conn.prepareStatement("insert into member(m_id,m_pw,m_name,m_email) values(?,?,?,?)");
+            pstmt.setString(1,member.getMId());
+            pstmt.setString(2,member.getMPw());
+            pstmt.setString(3,member.getMName());
+            pstmt.setString(4,member.getMPw());
+            pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            if(pstm != null) {
+            if(pstmt != null) {
                 try {
-                    pstm.close();
+                    pstmt.close();
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
             }
-            if(conn != null){
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+//            if(conn != null){
+//                try {
+//                    conn.close();
+//                } catch (SQLException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
 
         }
         return member;
@@ -52,9 +58,9 @@ public class JdbcMemberRepository extends JDBConnect implements MemberRepository
     public Member findById(String mId) throws RuntimeException {
         Member member = null;
         try {
-            pstm = conn.prepareStatement("select * from member where m_id = ?");
-            pstm.setString(1,mId);
-            rs = pstm.executeQuery();
+            pstmt = conn.prepareStatement("select * from member where m_id = ?");
+            pstmt.setString(1,mId);
+            rs = pstmt.executeQuery();
 
             if(rs.next()){
                 String m_email = rs.getString("m_email");
@@ -68,20 +74,20 @@ public class JdbcMemberRepository extends JDBConnect implements MemberRepository
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }finally {
-            if(pstm != null) {
+            if(pstmt != null) {
                 try {
-                    pstm.close();
+                    pstmt.close();
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
             }
-            if(conn != null){
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+//            if(conn != null){
+//                try {
+//                    conn.close();
+//                } catch (SQLException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
 
         }
         return member;
@@ -91,10 +97,9 @@ public class JdbcMemberRepository extends JDBConnect implements MemberRepository
     public int delete(Member member) {
         int result;
         try {
-            pstm = conn.prepareStatement("delete from member where m_id = ? ");
-            pstm.setString(1,member.getMId());
-            result = pstm.executeUpdate();
-            conn.commit();
+            pstmt = conn.prepareStatement("delete from member where m_id = ? ");
+            pstmt.setString(1,member.getMId());
+            result = pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
