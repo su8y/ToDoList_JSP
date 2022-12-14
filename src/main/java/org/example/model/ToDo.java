@@ -12,6 +12,5 @@ public class ToDo {
     long toDoId;
     String m_name;
     String toDo;
-    boolean status;
-
+    int status;
 }
